@@ -4,9 +4,11 @@
   "description": "## Part 1 Instructions In the initial commit of this project you were provided with data on several novels including their author and genres. Working in a branch called `part-one-answer`, your tasks are:",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "lint": "eslint --format codeframe .",
-    "lint:fix": "eslint --fix --format codeframe ."
+    "dev": "./node_modules/.bin/env-cmd ./node_modules/.bin/nodemon index.js",
+    "dev:migrate": "./node_modules/.bin/env-cmd ./node_modules/.bin/sequelize db:migrate --env development --config ./config/sequelize.js",
+    "lint": "./node_modules/.bin/eslint --format codeframe .",
+    "lint:fix": "./node_modules/.bin/eslint --fix --format codeframe ." ,
+    "test": "./node_modules/.bin/mocha tests/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -21,9 +23,11 @@
   "dependencies": {
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
-    "sequelize": "^5.22.3"
+    "sequelize": "^5.22.3",
+    "sequelize-cli": "^6.2.0"
   },
   "devDependencies": {
+    "env-cmd": "^10.1.0",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.6"
   }

@@ -3,22 +3,30 @@ const models = require('../models')
 const getAllAuthors = async (request, response) => {
   const authors = await models.authors.findAll()
 
-  return response.send(authors)
+  return authors
+    ? response.send(authors)
+    : response.sendStatus(404)
 }
+
 
 const getAuthorById = async (request, response) => {
   const { id } = request.params
 
-  const author = await models.authors.findOne({
-    where: { id },
-    include: [{ model: models.novels, include: [{ model: models.genres }] }
-
-
-    ]
+  const foundAuthor = await models.authors.findAll({
+    where: {
+      [models.Op.or]: [
+        { id: { [models.Op.like]: id } },
+        { nameLast: { [models.Op.like]: `%${id}%` } },
+      ]
+    },
+    include: [{
+      model: models.novels,
+      include: [{ model: models.genres }]
+    }]
   })
 
-  return author
-    ? response.send(author)
+  return foundAuthor
+    ? response.send(foundAuthor)
     : response.sendStatus(404)
 }
 
